@@ -12,16 +12,20 @@ def topic(request):
 
     return render(request,'topic.html')
 def webpage(request):
+    LTO=Topic.objects.all()
+    d={'LTO':LTO}
     if request.method=='POST':
-        topic=request.POST['to']
-        TO=Topic.objects.get(topic_name=topic)
+        topic=request.POST['tn']
         name=request.POST['name']
         url=request.POST['url']
+        TO=Topic.objects.get(topic_name=topic)
         WO=Webpage.objects.get_or_create(topic_name=TO,name=name,url=url)[0]
         WO.save()
         return HttpResponse('webpage insertion is done')
-    return render(request,'webpage.html')
+    return render(request,'webpage.html',d)
 def accessrecord(request):
+    LWO=Webpage.objects.all()
+    d={'LWO':LWO}
     if request.method=='POST':
         name=request.POST['name']
         NO=Webpage.objects.get(name=name)
@@ -31,4 +35,4 @@ def accessrecord(request):
         AO=AccessRecord.objects.get_or_create(name=NO,date=date,author=author)[0]
         AO.save()
         return HttpResponse('Accessrecord is inserted')
-    return render(request,'accessrecord.html')
+    return render(request,'accessrecord.html',d)
